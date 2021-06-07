@@ -1,0 +1,30 @@
+# TO USE THIS FILE, RENAME IT TO "config.yml".
+
+# HumeCord API config
+
+data:
+  main:
+    stats: {}
+    overrides: 
+      guilds: {}
+
+  sample:
+    guilds: {}
+
+auth:
+  change_this_key_its_insecure: [main, sample] # Debug (*)
+  another_bad_key_you_should_change: [main, sample] # Testcord
+
+
+ips:
+  - "::1"
+  - "localhost"
+  - "127.0.0.1"
+
+ignore_ready:
+  - main
+
+config:
+  overrides:
+    defaults:
+      sample: 5
