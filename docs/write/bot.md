@@ -18,7 +18,7 @@ Bots you wish to use on the API must follow this process.
     * Open `config.yml`
     * Add database entries under the `data` config option.
         * For this example:
-        * ```yaml
+        ```yaml
         botname:
             guilds: {}
         ```

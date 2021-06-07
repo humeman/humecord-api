@@ -26,17 +26,22 @@ Decorators are the `@api` calls at the start of the function.
 
 **Quart route:**
 `@api.app.route("/sample/put/guild, methods = ["PUT"])`
+
 Here, you have to define both the URL and the methods that are allowed for this route.
+
 Valid methods are:
     GET, PUT, POST, PATCH, DELETE
 
 **Authentication call:**
 `@api.auth(c)`
+
 This makes sure the request is authenticated.
 
 **Data validation call:** (optional)
 `@api.validate({"id": int, "db": dict})`
+
 This automatically validates any parameters that are needed to perform the request, and returns an error if they are not present or of an invalid type.
+
 Validation args should be a dict:
 
 ```py
