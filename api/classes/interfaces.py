@@ -2,6 +2,8 @@ import os
 import aiofiles
 import json
 import copy
+import asyncio
+import traceback
 
 import api
 from ..utils import subprocess
@@ -12,6 +14,8 @@ class JSONInterface:
             parent
         ):
 
+        self.task = None
+
         self.parent = parent
 
         self.files = {}
@@ -19,6 +23,8 @@ class JSONInterface:
         self.data = {}
 
         self.lock = {}
+
+        self.to_write = {}
 
     async def load(self):
         # Get all files from config
@@ -52,24 +58,77 @@ class JSONInterface:
                 #logger.traceback()
                 #sys.exit(-1)
 
-        self.lock[name] = False
+            self.lock[name] = False
+
+    def start(
+            self
+        ):
+
+        self.task = asyncio.get_event_loop().create_task(self.write_loop())
+
+    async def watch(
+            self
+        ):
+
+        while True:
+            if self.task is not None:
+                if self.task.done():
+                    exc = self.task.exception()
+
+                    if exc is not None:
+                        try:
+                            raise exc
+
+                        except:
+                            traceback.print_exc()
+
+            await asyncio.sleep(1)
+
+    async def write_loop(
+            self
+        ):
+
+        print("WRITe loop")
+
+        while True:
+            await self.write_one()
+            self.to_write = {}
+
+            await asyncio.sleep(5)
+
+    async def write_one(
+            self
+        ):
+        print("Writing")
+
+        for category, details in self.files.items():
+            if self.to_write.get(category) == True:
+                await self._write(category)
+
+                path = details["path"]
+
+                async with aiofiles.open(f"{path}/db.json", mode = "w+") as f:
+                    await f.write(json.dumps(self.data[category], indent = 4))
+
+                print(f"Wrote {category}")
     
-    async def write(
+    async def _write(
             self,
             category: str
         ):
-        if self.lock[category]:
-            print(f"{category} is locked, skipping")
-            return
-
-        self.lock[category] = True
-
         path = self.files[category]["path"]
 
         async with aiofiles.open(f"{path}/db.json", mode = "w+") as f:
             await f.write(json.dumps(self.data[category], indent = 4))
 
-        self.lock[category] = False
+    async def write(
+            self,
+            category: str
+        ):
+
+        self.to_write[category] = True
+        
+        return
 
 interfaces = {
     "json": JSONInterface

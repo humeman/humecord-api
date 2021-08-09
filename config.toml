@@ -1,0 +1,8 @@
+debug = true
+workers = 8
+bind = "localhost:5555"
+h2_max_concurrent_streams = 250
+keep_alive_timeout = 25
+user = "camden"
+#server_names = ["node.humeman.com", "localhost", "127.0.0.1", "207.244.252.28"]
+max_app_queue_size = 20

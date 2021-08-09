@@ -16,7 +16,12 @@ def wrap_auth(category):
                 data = await request.get_json()
             
             if category not in api.config.ignore_ready:
-                if not api.mem["ready"][category]["ready"]:
+                ready = await api.db.get(
+                    "main",
+                    f"ready/{category}/ready"
+                )
+
+                if not ready:
                     return messenger.error(
                         "AuthError",
                         f"Bot {category} isn't ready"

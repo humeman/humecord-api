@@ -1,7 +1,8 @@
 from . import exceptions
 
 def follow(dict_, path):
-    path = path.split("/")
+    if type(path) == str:
+        path = path.split("/")
 
     current = dict_
 

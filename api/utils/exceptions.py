@@ -7,3 +7,9 @@ class NotFound(Exception):
 
 class SecurityError(Exception):
     pass
+
+class InvalidData(Exception):
+    pass
+
+class WriteFailed(Exception):
+    pass
