@@ -1,3 +1,8 @@
+# Archive Notice
+This repo has been archived, along with its parent project [humecord](https://github.com/humeman/humecord), in January 16, 2024. This API provided communication between Humecord discord bots and a central database, backed by Mongo, permitting multiple bots to communicate with each other.
+
+---
+
 # 🤖 humecord-api
 An easy to use Quart wrapper for creating APIs for use with my humecord library.
 
